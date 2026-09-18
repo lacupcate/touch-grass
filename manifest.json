@@ -1,0 +1,17 @@
+{
+  "name": "Touch Grass",
+  "short_name": "Touch Grass",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0b170e",
+  "theme_color": "#0b170e",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "favicon.png",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
