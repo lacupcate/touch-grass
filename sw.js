@@ -1,4 +1,4 @@
-const CACHE_NAME = 'touch-grass-v1';
+const CACHE_NAME = 'touch-grass-v2';
 
 self.addEventListener('install', (e) => {
   e.waitUntil(
@@ -9,7 +9,7 @@ self.addEventListener('install', (e) => {
         './css/style.css',
         './js/app.js',
         './manifest.json',
-        './favicon.svg'
+        './icon.png'
       ]);
     })
   );
