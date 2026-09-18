@@ -12,11 +12,11 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Touch Grass">
 
-  <!-- Favicon / Page Icon (PNG Version) -->
-  <link rel="icon" type="image/png" href="icon.png">
-  <link rel="apple-touch-icon" href="icon.png">
+  <!-- Favicon / Page Icon (icons folder) -->
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/icon-512.png">
 
-  <!-- Manifest -->
+  <!-- Web App Manifest Link -->
   <link rel="manifest" href="manifest.json">
 
   <!-- Stylesheet -->
@@ -67,15 +67,22 @@
   <!-- Main JavaScript App -->
   <script src="js/app.js"></script>
   
-  <!-- Service Worker Registration for All Devices PWA -->
+  <!-- Service Worker & PWA Install Engine -->
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('sw.js')
-          .then(reg => console.log('SW Registered'))
-          .catch(err => console.log('SW Registration failed: ', err));
+          .then(reg => console.log('PWA Service Worker Active'))
+          .catch(err => console.log('SW Registration error: ', err));
       });
     }
+
+    // Capture Native Browser PWA Install Prompt
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+    });
   </script>
 </body>
 </html>
