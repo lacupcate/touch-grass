@@ -3,42 +3,64 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Touch Grass</title>
+  <title>Touch Grass 3D</title>
 
-  <!-- PWA & Web App Meta Tags -->
+  <!-- 🌐 PRIMARY META TAGS (Basic SEO) -->
+  <meta name="title" content="Touch Grass 3D">
+  <meta name="description" content="Touch grass online without going outside. Interactive 3D web application.">
+
+  <!-- 💬 OPEN GRAPH / FACEBOOK / WHATSAPP META TAGS (Social Preview) -->
+  <meta property="og:type" content="website">
+  <!-- CHANGE THIS URL TO YOUR EXACT LIVE WEBSITE URL -->
+  <meta property="og:url" content="https://lacupcate.github.io/">
+  <meta property="og:title" content="Touch Grass 3D">
+  <meta property="og:description" content="Touch grass online without going outside.">
+  <!-- Absolute path to your preview image is mandatory for WhatsApp -->
+  <meta property="og:image" content="https://lacupcate.github.io/app-icons/preview-icon.png">
+
+  <!-- 🐦 TWITTER / X META TAGS -->
+  <meta name="twitter:card" content="summary_large_image">
+  <!-- CHANGE THIS URL TO YOUR EXACT LIVE WEBSITE URL -->
+  <meta name="twitter:url" content="https://lacupcate.github.io/">
+  <meta name="twitter:title" content="Touch Grass 3D">
+  <meta name="twitter:description" content="Touch grass online without going outside.">
+  <!-- Absolute path to your preview image -->
+  <meta name="twitter:image" content="https://lacupcate.github.io/app-icons/preview-icon.png">
+
+  <!-- 📱 PWA & MOBILE WEB APP META TAGS (Chrome OS & All Devices) -->
   <meta name="theme-color" content="#0b170e">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="TouchGrass">
+  <meta name="apple-mobile-web-app-title" content="Touch Grass">
 
-  <!-- Icons for Browser and iOS -->
+  <!-- 🏷️ APP ICONS (Chrome & iOS) -->
   <link rel="icon" type="image/png" sizes="192x192" href="app-icons/icon-192.png">
   <link rel="apple-touch-icon" href="app-icons/icon-512.png">
 
-  <!-- Web App Manifest Link -->
+  <!-- 📑 WEB APP MANIFEST LINK (Required for Install Button) -->
   <link rel="manifest" href="manifest.json">
 
-  <!-- Stylesheet -->
+  <!-- 🎨 STYLESHEET -->
   <link rel="stylesheet" href="css/style.css">
 
-  <!-- Three.js Engine Library -->
+  <!-- 📦 THREE.JS ENGINE LIBRARY -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body>
 
-  <!-- 3D Canvas Container -->
+  <!-- 🎮 3D Canvas Container -->
   <div id="webgl-container"></div>
 
-  <!-- Top Right Circular Action Buttons -->
+  <!-- 🎛️ Top Right Circular Action Buttons -->
   <div id="top-right-bar">
-    <!-- PWA Native Dynamic Install Button (Hidden until browser triggers it) -->
-    <button id="btn-install" class="btn-circle" title="Install App" style="display: none;">📥</button>
-    <button id="btn-info" class="btn-circle" title="Info">ℹ️</button>
+    <!-- PWA Install Button (Dynamic, hidden by default) -->
     <button id="btn-grassy" class="btn-circle" title="Ask Grassy">🤖</button>
+    <button id="btn-info" class="btn-circle" title="Info">ℹ️</button>
+
   </div>
 
-  <!-- Info Modal -->
+  <!-- ℹ️ Info Modal -->
   <div id="modal-info" class="popup-modal">
     <div class="modal-header">
       <h3>Touch Grass</h3>
@@ -49,10 +71,11 @@
       <p style="margin-top: 12px;">
         App developed by <a href="https://lacupcate.github.io/" target="_blank" rel="noopener" class="blue-link">Cupcate</a>
       </p>
+          <button id="btn-install" class="btn-circle" title="Install App" style="display: none;">📥</button>
     </div>
   </div>
 
-  <!-- Ask Grassy Modal -->
+  <!-- 🤖 Ask Grassy Modal -->
   <div id="modal-grassy" class="popup-modal">
     <div class="modal-header">
       <h3>Ask Grassy</h3>
@@ -66,27 +89,31 @@
     </div>
   </div>
 
-  <!-- Main JavaScript App -->
+  <!-- 🚀 Main JavaScript App -->
   <script src="js/app.js"></script>
   
-  <!-- Service Worker & Native PWA Prompt Logic -->
+  <!-- ⚙️ SERVICE WORKER & PWA INSTALL LOGIC -->
   <script>
-    // 1. Register Service Worker
+    // 1. Register Service Worker (Ensures install button capability)
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
+        // Register sw.js in the main directory
         navigator.serviceWorker.register('./sw.js')
-          .then(reg => console.log('PWA Service Worker Registered Successfully'))
-          .catch(err => console.error('SW Registration Failed: ', err));
+          .then(reg => console.log('Touch Grass PWA Service Worker Registered'))
+          .catch(err => console.error('PWA Service Worker Registration Failed: ', err));
       });
     }
 
-    // 2. Native Chrome PWA Install Trigger
+    // 2. Capture and handle the Native Browser PWA Install Prompt
     let deferredPrompt;
     const installBtn = document.getElementById('btn-install');
 
     window.addEventListener('beforeinstallprompt', (e) => {
-      // Store event and display our custom install icon in case Chrome browser omnibox doesn't render it instantly
+      // Prevent the default browser mini-infobar from appearing
+      e.preventDefault();
+      // Stash the event so it can be triggered later
       deferredPrompt = e;
+      // Show our custom circular install button (📥)
       if (installBtn) {
         installBtn.style.display = 'flex';
       }
@@ -95,16 +122,21 @@
     if (installBtn) {
       installBtn.addEventListener('click', async () => {
         if (!deferredPrompt) return;
+        // Show the native browser install prompt
         deferredPrompt.prompt();
+        // Wait for the user to respond to the prompt
         const { outcome } = await deferredPrompt.userChoice;
-        console.log(`User response to the install prompt: ${outcome}`);
+        console.log(`User response to the PWA install prompt: ${outcome}`);
+        // We no longer need the prompt; it can only be used once
         deferredPrompt = null;
+        // Hide our custom install button
         installBtn.style.display = 'none';
       });
     }
 
+    // Listen for successful installation event
     window.addEventListener('appinstalled', () => {
-      console.log('Touch Grass PWA was installed successfully');
+      console.log('Touch Grass PWA was installed successfully!');
       if (installBtn) installBtn.style.display = 'none';
     });
   </script>
