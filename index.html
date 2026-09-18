@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Touch Grass</title>
+
+  <!-- PWA & Mobile Web App Meta Tags (جميع الأجهزة) -->
+  <meta name="theme-color" content="#0b170e">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Touch Grass">
+
+  <!-- Favicon / Page Icon -->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="apple-touch-icon" href="favicon.svg">
+
+  <!-- Manifest -->
+  <link rel="manifest" href="manifest.json">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+
+  <!-- Three.js Engine Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+
+  <!-- 3D Canvas Container -->
+  <div id="webgl-container"></div>
+
+  <!-- Top Right Circular Action Buttons -->
+  <div id="top-right-bar">
+    <button id="btn-info" class="btn-circle" title="Info">ℹ️</button>
+    <button id="btn-grassy" class="btn-circle" title="Ask Grassy">🤖</button>
+  </div>
+
+  <!-- Info Modal -->
+  <div id="modal-info" class="popup-modal">
+    <div class="modal-header">
+      <h3>Touch Grass</h3>
+      <button id="close-info" class="btn-close-circle">✕</button>
+    </div>
+    <div class="modal-body">
+      <p>Touch grass online, no need to go outside.</p>
+      <p style="margin-top: 12px;">
+        App developed by <a href="https://lacupcate.github.io/" target="_blank" rel="noopener" class="blue-link">Cupcate</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- Ask Grassy Modal -->
+  <div id="modal-grassy" class="popup-modal">
+    <div class="modal-header">
+      <h3>Ask Grassy</h3>
+      <button id="close-grassy" class="btn-close-circle">✕</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-weight: 600; color: #8ed993; margin-bottom: 6px;">🤖 Grassy AI:</p>
+      <p style="font-size: 15px; line-height: 1.5; color: #ffffff;">
+        "Why th do we need an AI in touching grass web app? I don't think we need AI everywhere."
+      </p>
+    </div>
+  </div>
+
+  <!-- Main JavaScript App -->
+  <script src="js/app.js"></script>
+  
+  <!-- Service Worker Registration for All Devices PWA -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js')
+          .then(reg => console.log('SW Registered'))
+          .catch(err => console.log('SW Registration failed: ', err));
+      });
+    }
+  </script>
+</body>
+</html>
